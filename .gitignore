@@ -1,0 +1,13 @@
+# Model files — too large for git
+models/*.gguf
+models/.cache/
+
+# Build output
+priorityserve
+
+# macOS
+.DS_Store
+
+# Results (generated during benchmarks)
+results/*.json
+results/*.csv
