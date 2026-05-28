@@ -1,3 +1,6 @@
+# llama.cpp clone — install via Homebrew or build from source (see QUICKSTART.md)
+llama.cpp/
+
 # Model files — too large for git
 models/*.gguf
 models/.cache/
@@ -8,6 +11,5 @@ priorityserve
 # macOS
 .DS_Store
 
-# Results (generated during benchmarks)
-results/*.json
-results/*.csv
+# Ephemeral load test runs (keep named benchmark results)
+results/loadtest_2*.json

@@ -1,0 +1,36 @@
+{
+  "timestamp": "2026-05-28T13:28:34-07:00",
+  "addr": "http://localhost:8080",
+  "total_requests": 60,
+  "concurrency": 10,
+  "high_pct": 10,
+  "med_pct": 20,
+  "low_pct": 70,
+  "prompt": "Count from 1 to 15, one number per line.",
+  "duration_sec": 68.3502275,
+  "req_per_sec": 0.8778317526448614,
+  "errors": 0,
+  "tiers": {
+    "high": {
+      "count": 6,
+      "p50_ms": 4453,
+      "p95_ms": 4500,
+      "p99_ms": 4500,
+      "max_ms": 4531
+    },
+    "low": {
+      "count": 42,
+      "p50_ms": 13575,
+      "p95_ms": 16065,
+      "p99_ms": 18019,
+      "max_ms": 18341
+    },
+    "medium": {
+      "count": 12,
+      "p50_ms": 4487,
+      "p95_ms": 4713,
+      "p99_ms": 4713,
+      "max_ms": 6543
+    }
+  }
+}
