@@ -15,9 +15,11 @@ except ImportError:
 
 results_dir = Path(__file__).parent.parent / "results"
 files = {
-    "c=10": results_dir / "loadtest_c10.json",
-    "c=25": results_dir / "loadtest_c25.json",
-    "c=50": results_dir / "loadtest_c50.json",
+    "c=10":  results_dir / "loadtest_c10.json",
+    "c=25":  results_dir / "loadtest_c25.json",
+    "c=50":  results_dir / "loadtest_c50.json",
+    "c=75":  results_dir / "loadtest_c75.json",
+    "c=100": results_dir / "loadtest_c100.json",
 }
 
 data = {}

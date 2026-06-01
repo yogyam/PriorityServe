@@ -10,13 +10,15 @@ Existing local LLM servers (Ollama, llama.cpp server) treat all requests equally
 
 60 requests, 10% high / 20% medium / 70% low priority distribution, Llama 3.2 3B Q4 on Apple M1.
 
-| Concurrency | High p95 | Medium p95 | Low p95 | Separation |
-|-------------|----------|------------|---------|------------|
-| 10 clients  | 4,500ms  | 4,713ms    | 16,065ms | **3.6x**  |
-| 25 clients  | 4,654ms  | 9,168ms    | 41,813ms | **9.0x**  |
-| 50 clients  | 9,472ms  | 19,396ms   | 59,901ms | **6.3x**  |
+| Concurrency | High p95 | Medium p95 | Low p95   | Separation |
+|-------------|----------|------------|-----------|------------|
+| 10 clients  | 4,500ms  | 4,713ms    | 16,065ms  | **3.6x**   |
+| 25 clients  | 4,654ms  | 9,168ms    | 41,813ms  | **9.0x**   |
+| 50 clients  | 9,472ms  | 19,396ms   | 59,901ms  | **6.3x**   |
+| 75 clients  | 9,657ms  | 27,483ms   | 95,452ms  | **9.9x**   |
+| 100 clients | 13,172ms | 34,685ms   | 115,579ms | **8.8x**   |
 
-**High priority p95 stays at ~4.5s at low-to-moderate load while low priority degrades to 42s — a 9x latency separation under the same hardware and model.**
+**High priority p95 grows from 4.5s to 13s across a 10x increase in load. Low priority degrades from 16s to 116s over the same range. Latency separation holds consistently between 6–10x at every concurrency level.**
 
 ![Benchmark Chart](results/benchmark.png)
 
