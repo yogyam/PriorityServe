@@ -16,6 +16,9 @@ type Config struct {
 	QueueDepth     int
 	CacheSize      int
 	MetricsAddr    string
+	AgeLowToMed    time.Duration // promote low→medium after this wait (0 = disabled)
+	AgeMedToHigh   time.Duration // promote medium→high after this wait (0 = disabled)
+	AgeInterval    time.Duration // how often to scan for aged requests
 }
 
 func Load() *Config {
@@ -29,6 +32,9 @@ func Load() *Config {
 		QueueDepth:     getInt("PS_QUEUE_DEPTH", 100),
 		CacheSize:      getInt("PS_CACHE_SIZE", 128),
 		MetricsAddr:    getEnv("PS_METRICS_ADDR", ":9090"),
+		AgeLowToMed:    getDuration("PS_AGE_LOW_TO_MED", 30*time.Second),
+		AgeMedToHigh:   getDuration("PS_AGE_MED_TO_HIGH", 60*time.Second),
+		AgeInterval:    getDuration("PS_AGE_INTERVAL", 1*time.Second),
 	}
 }
 

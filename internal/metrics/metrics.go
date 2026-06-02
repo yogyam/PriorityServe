@@ -33,4 +33,13 @@ var (
 		},
 		[]string{"priority", "status"},
 	)
+
+	// PromotionsTotal counts requests promoted to a higher tier due to aging.
+	PromotionsTotal = promauto.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "priorityserve_promotions_total",
+			Help: "Total requests promoted to a higher priority tier due to wait-time aging.",
+		},
+		[]string{"from_tier", "to_tier"},
+	)
 )

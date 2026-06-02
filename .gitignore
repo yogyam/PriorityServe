@@ -6,7 +6,7 @@ models/*.gguf
 models/.cache/
 
 # Build output
-priorityserve
+/priorityserve
 
 # macOS
 .DS_Store

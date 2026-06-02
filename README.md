@@ -49,6 +49,26 @@ Three FIFO queues, one per tier. The scheduler drains high before medium, medium
 
 ---
 
+## Starvation Prevention
+
+Strict priority scheduling has a known failure mode: if high-priority requests arrive continuously, low-priority requests never get served.
+
+PriorityServe solves this with **wait-time aging** — a background goroutine scans the queues every second and promotes requests that have waited past a threshold:
+
+- `low → medium` after 30s (configurable via `PS_AGE_LOW_TO_MED`)
+- `medium → high` after 60s (configurable via `PS_AGE_MED_TO_HIGH`)
+
+Under a 100-client burst test, all 84 low-priority requests were promoted to medium after 30s, and 63 were subsequently promoted to high. Every request is guaranteed service within `PS_AGE_LOW_TO_MED + PS_AGE_MED_TO_HIGH` seconds regardless of high-priority load.
+
+```
+priorityserve_promotions_total{from_tier="low",to_tier="medium"}   84
+priorityserve_promotions_total{from_tier="medium",to_tier="high"}  63
+```
+
+> **Note:** Aging bounds starvation but doesn't reduce tail latency under full saturation — when all requests age up, they compete at higher tiers anyway. The benefit is the *guarantee*, not the average case.
+
+---
+
 ## Features
 
 - **OpenAI-compatible API** — drop-in for any OpenAI SDK client, just add `X-Priority` header

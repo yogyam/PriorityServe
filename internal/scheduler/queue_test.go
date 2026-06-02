@@ -112,6 +112,36 @@ func TestPopBlocksThenUnblocks(t *testing.T) {
 	}
 }
 
+func TestAging(t *testing.T) {
+	q := NewMultiQueue(100)
+
+	// Enqueue a low request with an old timestamp.
+	old := time.Now().Add(-35 * time.Second)
+	q.Push(&InferenceRequest{ID: "old-low", Priority: PriorityLow, EnqueuedAt: old})
+
+	// Enqueue a fresh low request.
+	q.Push(&InferenceRequest{ID: "fresh-low", Priority: PriorityLow, EnqueuedAt: time.Now()})
+
+	result := q.Age(30*time.Second, 60*time.Second)
+	if result.LowToMed != 1 {
+		t.Fatalf("expected 1 low→medium promotion, got %d", result.LowToMed)
+	}
+
+	ctx := context.Background()
+
+	// First pop should be the aged request (now in medium tier).
+	got, _ := q.Pop(ctx)
+	if got.ID != "old-low" {
+		t.Fatalf("expected old-low to be promoted and popped first, got %s", got.ID)
+	}
+
+	// Second pop is the fresh low.
+	got, _ = q.Pop(ctx)
+	if got.ID != "fresh-low" {
+		t.Fatalf("expected fresh-low second, got %s", got.ID)
+	}
+}
+
 func TestPopCancelledContext(t *testing.T) {
 	q := NewMultiQueue(10)
 	ctx, cancel := context.WithCancel(context.Background())

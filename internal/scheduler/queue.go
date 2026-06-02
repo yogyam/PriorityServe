@@ -3,7 +3,9 @@ package scheduler
 import (
 	"context"
 	"errors"
+	"log"
 	"sync"
+	"time"
 )
 
 // ErrQueueFull is returned when a tier's queue is at capacity.
@@ -108,4 +110,55 @@ func (mq *MultiQueue) shift(q *[]*InferenceRequest) *InferenceRequest {
 	(*q)[0] = nil // avoid memory leak
 	*q = (*q)[1:]
 	return req
+}
+
+// AgeResult reports how many promotions happened per transition.
+type AgeResult struct {
+	LowToMed  int
+	MedToHigh int
+}
+
+// Age scans the queues and promotes requests that have been waiting longer than
+// the given thresholds. Processes medium→high before low→medium so a request
+// promoted from low in this tick isn't immediately promoted to high.
+func (mq *MultiQueue) Age(lowToMed, medToHigh time.Duration) AgeResult {
+	mq.mu.Lock()
+	defer mq.mu.Unlock()
+
+	var result AgeResult
+	now := time.Now()
+
+	// Promote medium → high.
+	var newMedium []*InferenceRequest
+	for _, req := range mq.medium {
+		if medToHigh > 0 && now.Sub(req.EnqueuedAt) >= medToHigh && len(mq.high) < mq.depth {
+			mq.high = append(mq.high, req)
+			result.MedToHigh++
+			log.Printf("id=%s aged medium→high after %.1fs", req.ID, now.Sub(req.EnqueuedAt).Seconds())
+		} else {
+			newMedium = append(newMedium, req)
+		}
+	}
+	mq.medium = newMedium
+
+	// Promote low → medium.
+	var newLow []*InferenceRequest
+	for _, req := range mq.low {
+		if lowToMed > 0 && now.Sub(req.EnqueuedAt) >= lowToMed && len(mq.medium) < mq.depth {
+			mq.medium = append(mq.medium, req)
+			result.LowToMed++
+			log.Printf("id=%s aged low→medium after %.1fs", req.ID, now.Sub(req.EnqueuedAt).Seconds())
+		} else {
+			newLow = append(newLow, req)
+		}
+	}
+	mq.low = newLow
+
+	if result.LowToMed+result.MedToHigh > 0 {
+		select {
+		case mq.notify <- struct{}{}:
+		default:
+		}
+	}
+	return result
 }
