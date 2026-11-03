@@ -1,4 +1,4 @@
-module github.com/yourusername/priorityserve
+module github.com/yogyam/priorityserve
 
 go 1.23.0
 
