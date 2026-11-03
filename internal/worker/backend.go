@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/yourusername/priorityserve/internal/scheduler"
+	"github.com/yogyam/priorityserve/internal/scheduler"
 )
 
 // Backend is an HTTP client pointed at the llama.cpp server.
