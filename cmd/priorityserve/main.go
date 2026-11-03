@@ -10,12 +10,12 @@ import (
 	"time"
 
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	"github.com/yourusername/priorityserve/internal/config"
-	"github.com/yourusername/priorityserve/internal/dashboard"
-	"github.com/yourusername/priorityserve/internal/handler"
-	"github.com/yourusername/priorityserve/internal/metrics"
-	"github.com/yourusername/priorityserve/internal/scheduler"
-	"github.com/yourusername/priorityserve/internal/worker"
+	"github.com/yogyam/priorityserve/internal/config"
+	"github.com/yogyam/priorityserve/internal/dashboard"
+	"github.com/yogyam/priorityserve/internal/handler"
+	"github.com/yogyam/priorityserve/internal/metrics"
+	"github.com/yogyam/priorityserve/internal/scheduler"
+	"github.com/yogyam/priorityserve/internal/worker"
 )
 
 func main() {

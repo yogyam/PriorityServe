@@ -7,9 +7,9 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/yourusername/priorityserve/internal/dashboard"
-	"github.com/yourusername/priorityserve/internal/metrics"
-	"github.com/yourusername/priorityserve/internal/scheduler"
+	"github.com/yogyam/priorityserve/internal/dashboard"
+	"github.com/yogyam/priorityserve/internal/metrics"
+	"github.com/yogyam/priorityserve/internal/scheduler"
 )
 
 // Pool runs N worker goroutines, each pulling from the shared work channel

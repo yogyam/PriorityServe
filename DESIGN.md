@@ -544,7 +544,7 @@ Implement strictly in this order. Do not start a phase until the previous one wo
 **Goal:** A Go HTTP server that accepts one request and returns an llama.cpp response.
 
 **Tasks:**
-1. `go mod init github.com/yourusername/priorityserve`
+1. `go mod init github.com/yogyam/priorityserve`
 2. `internal/config/config.go` — load config from env
 3. `internal/handler/health.go` — `GET /health` returns 200
 4. `internal/worker/pool.go` — single worker, no pool logic yet, just HTTP forward

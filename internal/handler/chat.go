@@ -8,8 +8,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/yourusername/priorityserve/internal/dashboard"
-	"github.com/yourusername/priorityserve/internal/scheduler"
+	"github.com/yogyam/priorityserve/internal/dashboard"
+	"github.com/yogyam/priorityserve/internal/scheduler"
 )
 
 // ChatHandler accepts POST /v1/chat/completions, pushes the request into the
